@@ -8,6 +8,7 @@ import AddStudent from "./pages/AddStudent";
 import EditStudent from "./pages/EditStudent";
 import StudentProfile from "./pages/StudentProfile";
 import SeatAllocation from "./pages/SeatAllocation";
+import LayoutBuilder from "./pages/LayoutBuilder";
 
 function App() {
   return (
@@ -39,6 +40,9 @@ function App() {
 
         <Route path="/seat-allocation" element={<DashboardLayout />}>
           <Route index element={<SeatAllocation />} />
+        </Route>
+        <Route path="/layout-builder" element={<DashboardLayout />}>
+          <Route index element={<LayoutBuilder />} />
         </Route>
       </Routes>
     </main>
