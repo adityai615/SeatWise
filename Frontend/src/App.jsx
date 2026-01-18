@@ -3,6 +3,11 @@ import Rgister from "./pages/Register";
 import { Routes, Route } from "react-router-dom";
 import DashboardLayout from "./layout/DashboardLayout";
 import DashboardOverview from "./pages/DashboardOverview";
+import StudentsPage from "./pages/StudentsPage";
+import AddStudent from "./pages/AddStudent";
+import EditStudent from "./pages/EditStudent";
+import StudentProfile from "./pages/StudentProfile";
+import SeatAllocation from "./pages/SeatAllocation";
 
 function App() {
   return (
@@ -14,6 +19,26 @@ function App() {
         {/* Dashboard pages */}
         <Route path="/dashboard" element={<DashboardLayout />}>
           <Route index element={<DashboardOverview />} />
+        </Route>
+
+        <Route path="/students" element={<DashboardLayout />}>
+          <Route index element={<StudentsPage />} />
+        </Route>
+
+        <Route path="/add-student" element={<DashboardLayout />}>
+          <Route index element={<AddStudent />} />
+        </Route>
+
+        <Route path="/edit-student/:id" element={<DashboardLayout />}>
+          <Route index element={<EditStudent />} />
+        </Route>
+
+        <Route path="/student/:id" element={<DashboardLayout />}>
+          <Route index element={<StudentProfile />} />
+        </Route>
+
+        <Route path="/seat-allocation" element={<DashboardLayout />}>
+          <Route index element={<SeatAllocation />} />
         </Route>
       </Routes>
     </main>

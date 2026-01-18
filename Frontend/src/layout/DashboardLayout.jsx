@@ -4,17 +4,16 @@ import Sidebar from "../components/sidebar/Sidebar";
 import Topbar from "../components/topbar/Topbar";
 import { motion } from "framer-motion";
 import { Outlet } from "react-router-dom";
+import MobileNav from "../components/mobile/MobileNav";
 
 export default function DashboardLayout() {
   return (
     <div className="flex min-h-screen bg-bgLight">
-
       {/* SIDEBAR */}
       <Sidebar />
 
       {/* MAIN AREA */}
       <div className="flex-1 flex flex-col">
-
         {/* TOPBAR */}
         <Topbar />
 
@@ -25,8 +24,11 @@ export default function DashboardLayout() {
           transition={{ duration: 0.4 }}
           className="p-6"
         >
-          <Outlet />  {/* each page loads here */}
+          <Outlet /> {/* each page loads here */}
         </motion.div>
+
+        {/* MOBILE NAVIGATION */}
+        <MobileNav />
       </div>
     </div>
   );

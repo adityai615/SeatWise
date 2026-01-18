@@ -6,7 +6,7 @@ import DueFeesCard from "../components/dashboard/DueFeesCard";
 
 export default function DashboardOverview() {
   return (
-    <div>
+    <div className="pb-24">
       <h1 className="text-xl font-semibold mb-6">Dashboard Overview</h1>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
