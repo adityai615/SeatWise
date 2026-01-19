@@ -8,27 +8,36 @@ import MobileNav from "../components/mobile/MobileNav";
 
 export default function DashboardLayout() {
   return (
-    <div className="flex min-h-screen bg-bgLight">
-      {/* SIDEBAR */}
-      <Sidebar />
+    <div className="min-h-screen bg-bgLight flex">
+
+      {/* SIDEBAR - Hidden on mobile */}
+      <div className="hidden md:block">
+        <Sidebar />
+      </div>
 
       {/* MAIN AREA */}
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col w-full">
+
         {/* TOPBAR */}
-        <Topbar />
+        <div className="hidden md:block">
+          <Topbar />
+        </div>
 
         {/* CONTENT */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
-          className="p-6"
+          className="px-3 sm:px-6 py-4 w-full"
         >
-          <Outlet /> {/* each page loads here */}
+          <Outlet />
         </motion.div>
 
         {/* MOBILE NAVIGATION */}
-        <MobileNav />
+        <div className="md:hidden">
+          <MobileNav />
+        </div>
+
       </div>
     </div>
   );

@@ -47,7 +47,7 @@ export default function Sidebar() {
           className={({ isActive }) =>
             `flex items-center gap-3 p-3 rounded-lg cursor-pointer mb-1
             transition font-medium
-            ${isActive ? "bg-primary text-white" : "text-secondary hover:bg-bgLight"}`
+            ${isActive ? "bg-[#0052CC] text-white" : "text-secondary hover:bg-bgLight"}`
           }
         >
           {item.icon}

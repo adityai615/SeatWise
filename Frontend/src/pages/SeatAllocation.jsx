@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import Seat from "../components/seats/Seat";
 import SeatModal from "../components/seats/SeatModal";
 import SeatLegend from "../components/seats/SeatLegend";
+import { Edit } from "lucide-react";
 
 export default function SeatAllocation() {
   const savedLayout = JSON.parse(localStorage.getItem("seatLayout"));
-
   const rowLabels = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
   const initialLayout = savedLayout
@@ -16,7 +16,7 @@ export default function SeatAllocation() {
     initialLayout.map((row) => ({
       ...row,
       seats: row.seats.map((s) =>
-        s === 1 ? { type: 1, status: "free" } : { type: 0 }
+        s === 1 ? { type: 1, status: "free", studentId: null } : { type: 0 }
       ),
     }))
   );
@@ -24,7 +24,14 @@ export default function SeatAllocation() {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedSeat, setSelectedSeat] = useState(null);
 
-  // Compute seat numbering dynamically
+  const allStudents = [
+    { id: 1, name: "Aditya Jain" },
+    { id: 2, name: "Rohit Singh" },
+    { id: 3, name: "Megha" },
+    { id: 4, name: "Sahil" },
+  ];
+
+  // Compute seat numbers
   const computeSeatNumber = (layout, rowIndex, seatIndex) => {
     let count = 1;
     for (let r = 0; r <= rowIndex; r++) {
@@ -37,8 +44,8 @@ export default function SeatAllocation() {
     }
   };
 
-  // Toggle seat (free → occupied → free)
-  const toggleSeat = (rowIndex, seatIndex) => {
+  // Toggle seat
+  const toggleSeat = (rowIndex, seatIndex, studentId = null) => {
     setLayout((prev) =>
       prev.map((row, r) =>
         r === rowIndex
@@ -48,8 +55,8 @@ export default function SeatAllocation() {
                 s === seatIndex
                   ? {
                       ...seat,
-                      status:
-                        seat.status === "free" ? "occupied" : "free",
+                      status: seat.status === "free" ? "occupied" : "free",
+                      studentId: seat.status === "free" ? studentId : null,
                     }
                   : seat
               ),
@@ -60,30 +67,55 @@ export default function SeatAllocation() {
   };
 
   return (
-    <div className="pb-28 px-3 sm:px-6">
-      <h1 className="text-xl font-semibold mb-4 text-center sm:text-left">
-        Seat Allocation
-      </h1>
+    <div className="pb-32 px-3 mt-6 w-full overflow-x-hidden">
 
-      {/* Seat Legend */}
-      <div className="flex justify-center sm:justify-start">
+      {/* HEADER */}
+      <div className="mb-4 flex justify-between items-center">
+        <h1 className="text-xl font-semibold">Seat Allocation</h1>
+
+        <button
+          onClick={() => (window.location.href = "/layout-builder")}
+          className="hidden sm:flex px-4 py-2 bg-[#36B37E] text-white rounded-lg cursor-pointer shadow-md text-sm font-medium gap-1 items-center"
+        >
+          <Edit size={16} /> Edit Layout
+        </button>
+      </div>
+
+      {/* Floating Button (Mobile) */}
+      <button
+        onClick={() => (window.location.href = "/layout-builder")}
+        className="
+          sm:hidden 
+          fixed bottom-24 right-4 
+          bg-[#36B37E] text-white 
+          px-4 py-3 rounded-xl shadow-xl 
+          cursor-pointer flex items-center gap-2
+          z-50
+        "
+      >
+        <Edit size={18} />
+        Edit Layout
+      </button>
+
+      {/* LEGEND */}
+      <div className="flex justify-center">
         <SeatLegend />
       </div>
 
-      {/* RENDER ROWS */}
-      <div className="flex flex-col items-center gap-5 mt-4">
+      {/* SEAT ROWS */}
+      <div className="mt-5 flex flex-col gap-5 w-full">
         {layout.map((row, rowIndex) => (
           <div
             key={row.id}
-            className="flex items-center gap-3 sm:gap-4 w-full justify-center"
+            className="flex items-start gap-3 w-full"
           >
-            {/* Row Label (A, B, C...) */}
-            <div className="w-5 text-[#172B4D] font-semibold text-sm sm:text-lg text-center">
+            {/* Row Label */}
+            <div className="min-w-6.5 text-[#172B4D] m font-semibold text-lg pt-2">
               {rowLabels[rowIndex]}
             </div>
 
-            {/* Seats */}
-            <div className="flex gap-2 sm:gap-4">
+            {/* Seats (scrollable) */}
+            <div className="flex gap-2 overflow-x-auto overflow-y-hidden py-1 no-scrollbar">
               {row.seats.map((seat, seatIndex) =>
                 seat.type === 1 ? (
                   <Seat
@@ -91,23 +123,17 @@ export default function SeatAllocation() {
                     seat={{
                       rowIndex,
                       seatIndex,
-                      number: computeSeatNumber(
-                        layout,
-                        rowIndex,
-                        seatIndex
-                      ),
+                      number: computeSeatNumber(layout, rowIndex, seatIndex),
                       status: seat.status,
+                      studentId: seat.studentId,
                     }}
                     onToggle={() => {
                       setSelectedSeat({
                         rowIndex,
                         seatIndex,
-                        number: computeSeatNumber(
-                          layout,
-                          rowIndex,
-                          seatIndex
-                        ),
+                        number: computeSeatNumber(layout, rowIndex, seatIndex),
                         status: seat.status,
+                        studentId: seat.studentId,
                       });
                       setModalOpen(true);
                     }}
@@ -115,8 +141,8 @@ export default function SeatAllocation() {
                 ) : (
                   <div
                     key={seatIndex}
-                    className="w-12 h-12 sm:w-16 sm:h-16 bg-transparent"
-                  ></div>
+                    className="w-10 h-10 sm:w-14 sm:h-14 bg-transparent"
+                  />
                 )
               )}
             </div>
@@ -126,11 +152,13 @@ export default function SeatAllocation() {
 
       {/* MODAL */}
       <SeatModal
+        key={selectedSeat?.rowIndex + "-" + selectedSeat?.seatIndex}
         isOpen={modalOpen}
         seat={selectedSeat}
+        allStudents={allStudents}
         onClose={() => setModalOpen(false)}
-        onToggle={(rowIndex, seatIndex) =>
-          toggleSeat(rowIndex, seatIndex)
+        onToggle={(rowIndex, seatIndex, studentId) =>
+          toggleSeat(rowIndex, seatIndex, studentId)
         }
       />
     </div>
