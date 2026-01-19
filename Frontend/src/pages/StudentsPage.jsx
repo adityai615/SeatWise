@@ -12,20 +12,20 @@ export default function StudentsPage() {
   ];
 
   return (
-    <div className="pb-24">
+    <motion.div className="pb-24">
       {/* Page Heading */}
       <h1 className="text-xl font-semibold mb-5">Students</h1>
 
       {/* Search + Add Student */}
-      <div className="flex items-center gap-3 mb-5">
-        <div className="flex flex-1 items-center bg-bgLight px-3 py-2 rounded-lg">
+      <motion.div className="flex items-center gap-3 mb-5">
+        <motion.div className="flex flex-1 items-center bg-bgLight px-3 py-2 rounded-lg">
           <Search size={18} className="text-secondary" />
           <input
             type="text"
             placeholder="Search students..."
             className="ml-2 bg-transparent outline-none text-sm w-full"
           />
-        </div>
+        </motion.div>
 
         <button
           onClick={() => (window.location.href = "/add-student")}
@@ -34,28 +34,27 @@ export default function StudentsPage() {
           <UserPlus size={18} />
           <span className="hidden sm:block">Add</span>
         </button>
-      </div>
+      </motion.div>
 
       {/* Students List - Mobile Card View */}
-      <div className="grid grid-cols-1 gap-4 md:hidden">
+      <motion.div className="grid grid-cols-1 gap-4 md:hidden">
         {students.map((st, i) => (
-          <div key={i} className="relative w-full">
+          <motion.div key={i} className="relative w-full">
             {/* BACKGROUND BUTTONS (Always hidden behind card) */}
-            <div className="absolute inset-0 flex items-center justify-between px-3 z-0">
+            <motion.div className="absolute inset-0 flex items-center justify-between px-3 z-0">
               {/* EDIT BUTTON (LEFT) */}
-              <div className="w-20 h-full flex items-center justify-center bg-[#172B4D] rounded-l-xl">
+              <motion.div className="w-20 h-full flex items-center justify-center bg-[#172B4D] rounded-l-xl">
                 <button className="text-white font-semibold text-sm">
                   Edit
                 </button>
-              </div>
-
+              </motion.div>
               {/* DELETE BUTTON (RIGHT) */}
-              <div className="w-20 h-full bg-[#FF5630] flex items-center justify-center bg-danger rounded-r-xl">
+              <motion.div className="w-20 h-full bg-[#FF5630] flex items-center justify-center bg-danger rounded-r-xl">
                 <button className="text-white  font-semibold text-sm">
                   Delete
                 </button>
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
 
             {/* SWIPE CARD */}
             <motion.div
@@ -84,7 +83,7 @@ export default function StudentsPage() {
               }}
             >
               {/* Card Content */}
-              <div className="flex justify-between items-center mb-2">
+              <motion.div className="flex justify-between items-center mb-2">
                 <h2 className="text-lg font-semibold">{st.name}</h2>
                 <span
                   className={`px-2 py-1 rounded-md text-xs font-medium ${
@@ -95,17 +94,17 @@ export default function StudentsPage() {
                 >
                   {st.status}
                 </span>
-              </div>
+              </motion.div>
 
               <p className="text-sm text-secondary">Seat No: {st.seat}</p>
               <p className="text-sm text-secondary mt-1">Student ID: {st.id}</p>
             </motion.div>
-          </div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
 
       {/* Desktop Table View */}
-      <div className="hidden md:block overflow-x-auto bg-white shadow-md rounded-xl border border-gray-200 mt-4">
+      <motion.div className="hidden md:block overflow-x-auto bg-white shadow-md rounded-xl border border-gray-200 mt-4">
         <table className="w-full text-left">
           <thead>
             <tr className="bg-bgLight text-secondary text-sm">
@@ -141,7 +140,7 @@ export default function StudentsPage() {
             ))}
           </tbody>
         </table>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }

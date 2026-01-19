@@ -9,6 +9,7 @@ import EditStudent from "./pages/EditStudent";
 import StudentProfile from "./pages/StudentProfile";
 import SeatAllocation from "./pages/SeatAllocation";
 import LayoutBuilder from "./pages/LayoutBuilder";
+import RevenuePage from "./pages/RevenuePage";
 
 function App() {
   return (
@@ -43,6 +44,9 @@ function App() {
         </Route>
         <Route path="/layout-builder" element={<DashboardLayout />}>
           <Route index element={<LayoutBuilder />} />
+        </Route>
+        <Route path="/revenue" element={<DashboardLayout />}>
+          <Route index element={<RevenuePage />} />
         </Route>
       </Routes>
     </main>
